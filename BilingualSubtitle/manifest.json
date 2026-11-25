@@ -1,0 +1,10 @@
+{
+  "Name": "Bilingual Subtitle",
+  "Author": "li",
+  "Version": "0.1.0",
+  "Description": "Show bilingual dialogue subtitles (English original + Chinese translation).",
+  "UniqueID": "li.BilingualSubtitle",
+  "EntryDll": "BilingualSubtitle.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": []
+}
