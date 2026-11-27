@@ -7,7 +7,6 @@
     <RootNamespace>BilingualSubtitle</RootNamespace>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
-    <GamePath>D:\WorkBuddyProject\StardewValley\Stardew Valley</GamePath>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">

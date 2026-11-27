@@ -1,8 +1,8 @@
 {
   "Name": "Bilingual Subtitle",
   "Author": "li",
-  "Version": "0.1.0",
-  "Description": "Show bilingual dialogue subtitles (English original + Chinese translation).",
+  "Version": "0.2.0",
+  "Description": "Show bilingual subtitles (English original + Chinese translation) for dialogues and mail letters.",
   "UniqueID": "li.BilingualSubtitle",
   "EntryDll": "BilingualSubtitle.dll",
   "MinimumApiVersion": "4.0.0",

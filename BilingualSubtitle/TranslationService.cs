@@ -11,6 +11,7 @@ namespace BilingualSubtitle;
 internal class TranslationService
 {
     private readonly Dictionary<string, string> _translations = new();
+    private readonly Dictionary<string, string> _mailTranslations = new();
     private readonly IMonitor _monitor;
 
     public TranslationService(IModHelper helper, IMonitor monitor)
@@ -20,11 +21,26 @@ internal class TranslationService
         if (data == null || data.Count == 0)
         {
             monitor.Log("未找到翻译数据 translations/dialogues.json，或文件为空。Mod 将只显示英文原文。", LogLevel.Warn);
-            return;
         }
-        foreach (var kv in data)
-            _translations[kv.Key] = kv.Value;
-        monitor.Log($"已加载 {_translations.Count} 条翻译", LogLevel.Info);
+        else
+        {
+            foreach (var kv in data)
+                _translations[kv.Key] = kv.Value;
+            monitor.Log($"已加载 {_translations.Count} 条对话翻译", LogLevel.Info);
+        }
+
+        // 信件翻译：key=mailTitle，value=整封中文正文（含 ^ 换行与 @ 等占位符）
+        var mailData = helper.Data.ReadJsonFile<Dictionary<string, string>>("translations/mails.json");
+        if (mailData == null || mailData.Count == 0)
+        {
+            monitor.Log("未找到信件翻译数据 translations/mails.json，或文件为空。信件将不显示中文。", LogLevel.Warn);
+        }
+        else
+        {
+            foreach (var kv in mailData)
+                _mailTranslations[kv.Key] = kv.Value;
+            monitor.Log($"已加载 {_mailTranslations.Count} 封信件翻译", LogLevel.Info);
+        }
     }
 
     /// <summary>查中文译文，没有匹配返回 null。</summary>
@@ -87,5 +103,17 @@ internal class TranslationService
         }
 
         return null;
+    }
+
+    /// <summary>
+    /// 按 mailTitle 查整封信的中文译文。返回的文本含占位符（@ %farm %spouse 等），
+    /// 调用方在显示前需做正向替换（与游戏构造英文信件时一致）。
+    /// 无匹配返回 null。
+    /// </summary>
+    public string? GetMail(string? mailTitle)
+    {
+        if (string.IsNullOrEmpty(mailTitle))
+            return null;
+        return _mailTranslations.TryGetValue(mailTitle, out var zh) ? zh : null;
     }
 }
